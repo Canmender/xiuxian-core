@@ -1,8 +1,7 @@
-# Build output
+# Build
 build/
-temp_jar/
-*.jar
-target/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
 
 # IDE
 .idea/
@@ -15,3 +14,7 @@ target/
 # OS
 .DS_Store
 Thumbs.db
+
+# Old JARs
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
