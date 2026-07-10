@@ -1,15 +1,14 @@
 name: XiuXianCore
-version: 3.4
+version: '3.4.0'
 main: com.xiuxian.XiuXian
-api-version: 1.21
+api-version: '3.4.0'
 softdepend:
   - BentoBox
   - PlaceholderAPI
 commands:
   xw:
-    description: 查看/切换修炼方向
+    description: 鏌ョ湅/鍒囨崲淇偧鏂瑰悜
     usage: /xw [lianti|xiufa|leixing|addxp|setlevel|addlevel]
 permissions:
   xiuxian.admin:
-    description: 管理员权限
-    default: op
+    description: 绠＄悊鍛樻潈闄?    default: op
