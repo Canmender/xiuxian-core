@@ -1,4 +1,4 @@
-﻿﻿name: XiuXianCore
+name: XiuXianCore
 version: '3.4.0'
 main: com.xiuxian.XiuXian
 api-version: '1.21'
@@ -7,9 +7,9 @@ softdepend:
   - PlaceholderAPI
 commands:
   xw:
-    description: '查看/切换修炼方向'
+    description: 'xiuxian command'
     usage: /xw [lianti|xiufa|leixing|addxp|setlevel|addlevel]
 permissions:
   xiuxian.admin:
-    description: '管理员权限'
+    description: 'admin permission'
     default: op
