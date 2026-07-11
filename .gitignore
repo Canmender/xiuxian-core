@@ -17,4 +17,6 @@ Thumbs.db
 
 # Old JARs
 *.jar
-!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jartemp_jar/
+compile_err.txt
+*.class
