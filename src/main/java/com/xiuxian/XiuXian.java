@@ -14,8 +14,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.io.File;
 import java.io.FileReader;
@@ -40,7 +40,7 @@ public class XiuXian extends JavaPlugin implements CommandExecutor, Listener {
     private int islandRange = 200, levelCooldown = 120;
     private int realmLevels = 100, chongLevels = 10;
     private String formula;
-    private double xpBase = 80, xpRate = 1.014;
+    private double xpBase = 128, xpRate = 1.014;
     
 
     
@@ -48,6 +48,7 @@ public class XiuXian extends JavaPlugin implements CommandExecutor, Listener {
     private static final String G = ChatColor.GREEN.toString(), A = ChatColor.AQUA.toString(),
                                 Y = ChatColor.GRAY.toString(), W = ChatColor.YELLOW.toString(),
                                 LA = ChatColor.LIGHT_PURPLE.toString();
+    static final int MAX_LEVEL = 1300;
     static final String[] CN = {"\u4E00","\u4E8C","\u4E09","\u56DB","\u4E94",
                                  "\u516D","\u4E03","\u516B","\u4E5D","\u5341"};
 
@@ -154,7 +155,7 @@ public class XiuXian extends JavaPlugin implements CommandExecutor, Listener {
                 case "xp": return String.format("%.1f", data.getXp());
                 case "xp_needed": return String.format("%.0f", plugin.getXpForLevel(data.getLevel() + 1));
                 case "progress":
-                    if (data.getLevel() >= 1300) return "100.0";
+                    if (data.getLevel() >= MAX_LEVEL) return "100.0";
                     double needed = plugin.getXpForLevel(data.getLevel() + 1);
                     return String.format("%.1f", data.getXp() / needed * 100);
                 case "type": return data.activeType.equals("lianti") ? "\u70BC\u4F53" : "\u6CD5\u4FEE";
@@ -169,7 +170,7 @@ public class XiuXian extends JavaPlugin implements CommandExecutor, Listener {
                 case "xiufa_level": return String.valueOf(data.xiufaLevel);
                 case "lianti_realm": return plugin.getRealm(data.liantiLevel, true);
                 case "xiufa_realm": return plugin.getRealm(data.xiufaLevel, false);
-                default: return null;
+                default: return "";
             }
         }
     }
@@ -264,7 +265,7 @@ public class XiuXian extends JavaPlugin implements CommandExecutor, Listener {
     private void showStatus(Player p, PlayerData data) {
         String ltRealm = getRealm(data.liantiLevel, true);
         String xfRealm = getRealm(data.xiufaLevel, false);
-        double ltProgress = data.liantiLevel >= 1300 ? 100 : (data.liantiXp / getXpForLevel(data.liantiLevel + 1) * 100);
+        double ltProgress = data.liantiLevel >= MAX_LEVEL ? 100 : (data.liantiXp / getXpForLevel(data.liantiLevel + 1) * 100);
         double xfProgress = data.xiufaLevel >= 1300 ? 100 : (data.xiufaXp / getXpForLevel(data.xiufaLevel + 1) * 100);
         
         p.sendMessage(LA + "\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501");
@@ -307,7 +308,7 @@ public class XiuXian extends JavaPlugin implements CommandExecutor, Listener {
         p.sendMessage(colorize(msg));
         
         int oldLevel = data.getLevel();
-        while (data.getLevel() < 1300 && data.getXp() >= getXpForLevel(data.getLevel() + 1)) {
+        while (data.getLevel() < MAX_LEVEL && data.getXp() >= getXpForLevel(data.getLevel() + 1)) {
             data.setXp(data.getXp() - getXpForLevel(data.getLevel() + 1));
             data.setLevel(data.getLevel() + 1);
         }
@@ -377,7 +378,7 @@ public class XiuXian extends JavaPlugin implements CommandExecutor, Listener {
         if (data == null) return;
         
         int oldLevel = data.getLevel();
-        while (data.getLevel() < 1300 && data.getXp() >= getXpForLevel(data.getLevel() + 1)) {
+        while (data.getLevel() < MAX_LEVEL && data.getXp() >= getXpForLevel(data.getLevel() + 1)) {
             data.setXp(data.getXp() - getXpForLevel(data.getLevel() + 1));
             data.setLevel(data.getLevel() + 1);
         }
@@ -465,6 +466,7 @@ public class XiuXian extends JavaPlugin implements CommandExecutor, Listener {
     }
 
     private boolean isOnOwnIsland(Player p) {
+        if (ow == null || getIslandMethod == null || islandsManager == null) return false;
         if (islandsManager == null || ow == null || getIslandMethod == null) return false;
         if (!p.getWorld().equals(ow)) return false;
         try {
